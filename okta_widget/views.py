@@ -343,12 +343,55 @@ def view_login_disco(request):
 
 
 def view_admin(request):
-    if 'admin' not in request.session and 'company_admin' not in request.session:
-        return HttpResponseRedirect(reverse('not_authorized'))
 
     c.update({"js": _do_format(request, '/js/impersonate-delegate.js', 'admin')})
     c.update({"user_department": request.session.get('department', '')})
     return render(request, 'admin.html', c)
+
+
+def view_gate_1(request):
+    if 'profile_stage' not in request.session:
+        return HttpResponseRedirect(reverse('not_authorized'))
+
+    c.update({"js": _do_format(request, '/js/impersonate-delegate.js', 'admin')})
+    c.update({"user_department": request.session.get('department', '')})
+    return render(request, 'gate1.html', c)
+
+
+def view_gate_2(request):
+    if 'profile_stage' not in request.session:
+        return HttpResponseRedirect(reverse('not_authorized'))
+
+    c.update({"js": _do_format(request, '/js/impersonate-delegate.js', 'admin')})
+    c.update({"user_department": request.session.get('department', '')})
+    return render(request, 'gate2.html', c)
+
+
+def view_gate_3(request):
+    if 'profile_stage' not in request.session:
+        return HttpResponseRedirect(reverse('not_authorized'))
+
+    c.update({"js": _do_format(request, '/js/impersonate-delegate.js', 'admin')})
+    c.update({"user_department": request.session.get('department', '')})
+    return render(request, 'gate3.html', c)
+
+
+def view_gate_4(request):
+    if 'profile_stage' not in request.session:
+        return HttpResponseRedirect(reverse('not_authorized'))
+
+    c.update({"js": _do_format(request, '/js/impersonate-delegate.js', 'admin')})
+    c.update({"user_department": request.session.get('department', '')})
+    return render(request, 'gate4.html', c)
+
+
+def view_gate_5(request):
+    if 'profile_stage' not in request.session:
+        return HttpResponseRedirect(reverse('not_authorized'))
+
+    c.update({"js": _do_format(request, '/js/impersonate-delegate.js', 'admin')})
+    c.update({"user_department": request.session.get('department', '')})
+    return render(request, 'gate5.html', c)
 
 
 def list_users(request):
@@ -357,13 +400,28 @@ def list_users(request):
     if 'startsWith' in get:
         startsWith = get['startsWith']
     client = UsersClient('https://' + OKTA_ORG, API_KEY)
+    profile = request.session['profile']
+    profile_dict = json.loads(profile)
+    companyName = profile_dict.get('companyName')
 
     if 'admin' in request.session:
         users = client.list_users(15, startsWith)
     elif 'company_admin' in request.session:
-        users = client.list_users_scoped(15, request.session.get('companyName', ''), startsWith)
+        users = client.list_users_scoped(15, companyName, startsWith)
     else:
         return not_authorized(request)
+
+    response = HttpResponse()
+    response.status_code = 200
+    response.content = users
+    return response
+
+
+def display_profile(request):
+    client = UsersClient('https://' + OKTA_ORG, API_KEY)
+    user_id = request.session['user_id']
+
+    users = client.get_user(user_id)
 
     response = HttpResponse()
     response.status_code = 200
@@ -441,12 +499,25 @@ def update_user(request):
     email = None
     firstName = None
     lastName = None
-    role = None
-    deactivate = "false"
-    user_id = None
-    profile = request.session['profile']
-    profile_dict = json.loads(profile)
-    companyName = None
+    honorificPrefix = None
+    title = None
+    nickName = None
+    linkedinUrl = None
+    mobilePhone = None
+    primaryPhone = None
+    streetAddress = None
+    city = None
+    state = None
+    country = None
+    zipCode = None
+    preferredLanguage = None
+    preferredImagingSoftware = None
+    favoriteFontStyle = None
+    activate = "false"
+    profile_stage = None
+    user_id = request.session['user_id']
+
+    print(get)
 
     if 'email' in get:
         email = get['email']
@@ -454,14 +525,38 @@ def update_user(request):
         firstName = get['firstName']
     if 'lastName' in get:
         lastName = get['lastName']
-    if 'role' in get:
-        role = get['role']
-    if 'deactivate' in get:
-        deactivate = "true"
-    if 'user_id' in get:
-        user_id = get['user_id']
-    if 'companyName' in get:
-        companyName = get['companyName']
+    if 'honorificPrefix' in get:
+        honorificPrefix = get['honorificPrefix']
+    if 'title' in get:
+        title = "title"
+    if 'nickName' in get:
+        nickName = get['nickName']
+    if 'linkedinUrl' in get:
+        linkedinUrl = get['linkedinUrl']
+    if 'mobilePhone' in get:
+        mobilePhone = get['mobilePhone']
+    if 'primaryPhone' in get:
+        primaryPhone = get['primaryPhone']
+    if 'streetAddress' in get:
+        streetAddress = get['streetAddress']
+    if 'city' in get:
+        city = get['city']
+    if 'state' in get:
+        state = get['state']
+    if 'country' in get:
+        country = get['country']
+    if 'zipCode' in get:
+        zipCode = get['zipCode']
+    if 'preferredLanguage' in get:
+        preferredLanguage = get['preferredLanguage']
+    if 'preferredImagingSoftware' in get:
+        preferredImagingSoftware = get['preferredImagingSoftware']
+    if 'favoriteFontStyle' in get:
+        favoriteFontStyle = get['favoriteFontStyle']
+    if 'activate' in get:
+        activate = get['activate']
+    if 'profile_stage' in get:
+        profile_stage = get['profile_stage']
     client = UsersClient('https://' + OKTA_ORG, API_KEY)
 
     user = {
@@ -470,23 +565,34 @@ def update_user(request):
             "lastName": lastName,
             "email": email,
             "login": email,
-            "customer_role": role,
-            "companyName": companyName
+            "honorificPrefix": honorificPrefix,
+            "title": title,
+            "nickName": nickName,
+            "profileUrl": linkedinUrl,
+            "mobilePhone": mobilePhone,
+            "primaryPhone": primaryPhone,
+            "streetAddress": streetAddress,
+            "city": city,
+            "state": state,
+            "countryCode": country,
+            "zipCode": zipCode,
+            "preferredLanguage": preferredLanguage,
+            "preferredImagingSoftware": preferredImagingSoftware,
+            "favoriteFontStyle": favoriteFontStyle,
+            "digicom_user": True if activate else False,
+            "profile_stage": profile_stage,
+
         }
     }
 
     print(user)
 
-    if 'admin' in request.session:
-        users = client.update_user(user=user, user_id=user_id, deactivate=deactivate)
-    elif 'company_admin' in request.session:
-        users = client.create_user_scoped(user=user, activate="false", group="")
-    else:
-        return not_authorized(request)
+    users = client.update_user(user=user, user_id=user_id)
 
     response = HttpResponse()
     response.status_code = 200
     response.content = users
+    print(response.content)
     return response
 
 
@@ -740,6 +846,7 @@ def oauth2_post(request):
         if 'id_token' in request.POST:
             id_token = request.POST['id_token']
 
+
         # special impersonation logic overrides the org variables
         if 'org' in request.POST:
             if request.POST['org'] == IMPERSONATION_ORG:
@@ -775,7 +882,9 @@ def oauth2_post(request):
             request.session['profile'] = json.dumps(profile)
             request.session['given_name'] = profile['given_name']
             request.session['user_id'] = profile['sub']
-            request.session['companyName'] = profile['companyName']
+            request.session['digicom_user'] = profile['digicom_user']
+            request.session['profile_stage'] = profile['profile_stage']
+            print('Digicom ', profile['digicom_user'])
         except Exception as e:
             print('exception: {}'.format(e))
 
@@ -798,7 +907,7 @@ def oauth2_post(request):
                 request.session['profile'] = decoded
                 request.session['given_name'] = profile['given_name']
                 request.session['user_id'] = profile['sub']
-                request.session['companyName'] = profile['companyName']
+                request.session['digicom_user'] = profile['digicom_user']
             except Exception as e:
                 print('exception: {}'.format(e))
         else:

@@ -15,7 +15,7 @@ class UsersClient(object):
         url = self.base_url + '/api/v1/users?activate={}'.format(activate)
         response = requests.post(url, headers=self.headers, data=json.dumps(user))
 
-    def update_user(self, user, user_id, deactivate="false"):
+    def update_user(self, user, user_id):
         url = self.base_url + '/api/v1/users/{}'.format(user_id)
         response = requests.post(url, headers=self.headers, data=json.dumps(user))
         print(response.content)

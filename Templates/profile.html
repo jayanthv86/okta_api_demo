@@ -16,7 +16,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-8">
-            <h3>Welcome [[ idToken.name ]]! <span v-if="adminBadge" class="badge">[[ adminBadge ]]</span></h3>
+            <h3>Welcome [[ idToken.name ]]! </h3>
             <a href="http://localhost:8500/login-disco">Get Fresh Tokens here!</a>
             <h4>Here is your profile based upon your Okta login!</h4>
         </div>
@@ -95,8 +95,10 @@
                         <dd>[[ idToken.email ]]</dd>
                         <dt>Full Name</dt>
                         <dd>[[ idToken.name ]]</dd>
+                          <div v-if="idToken.digicom_user">
                         <dt>Company Name</dt>
                         <dd>[[ idToken.companyName ]]</dd>
+                          </div>
                         <div v-for="(claim, key, index) in idToken"
                              v-if="!['ver', 'iss', 'sub', 'aud', 'iat', 'exp', 'jti', 'amr', 'idp', 'nonce',
                              'auth_time', 'at_hash', 'c_hash', 'locale', 'zoneinfo', 'updated_at', 'email_verified',

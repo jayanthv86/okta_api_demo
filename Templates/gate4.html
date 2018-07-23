@@ -25,7 +25,7 @@
                         </div>
                     </div>
                 </div>
-                {% if 'profile_stage' in request.session and request.session.profile_stage <= 0 %}
+                {% if 'profile_stage' in request.session and request.session.profile_stage >= 0 %}
                 <div class="row">
                     <div class="col-md-12">
                         <h6>Because of your limited profile info, your view is limited. Please fill out more info to view more.</h6>
@@ -49,7 +49,6 @@
                             <th>Email</th>
                             <td><input type="text" id="email" class="form-control" value="" /></td>
                           </tr>
-                         {% if 'digicom_user' in request.session %}
                           <tr>
                             <th>Honorific Prefix</th>
                             <td><input type="text" id="honorificPrefix" class="form-control" value="" /></td>
@@ -62,8 +61,6 @@
                             <th>NickName</th>
                             <td><input type="text" id="nickName" class="form-control" value="" /></td>
                           </tr>
-
-                          {% if 'profile_stage' in request.session %}
                           <tr>
                             <th>LinkedIn URL</th>
                             <td><input type="text" id="linkedinUrl" class="form-control" value="" /></td>
@@ -108,15 +105,14 @@
                             <th>Favorite Font styles</th>
                             <td><input type="text" id="favoriteFontStyle" class="form-control" value="" /></td>
                           </tr>
-                        {% endif %}
-                        {% else %}
+                        {% if 'profile_stage' in request.session and request.session.profile_stage <= 4 %}
+
                           <label class="radio">Confirm your account?</label>
                           <input type="checkbox" id="activate"  v-model="activate" />Yes
                             <div class="col-sm-12">
-                                <a class="btn btn-success" onclick="updateUser(document.getElementById('firstName').value, document.getElementById('lastName').value, document.getElementById('email').value, null, null, null, null, null, null, null, null, null, null, null, null, null, null, document.getElementById('activate').checked, '0')">Submit</a>
+                                <a class="btn btn-success" onclick="updateUser(document.getElementById('firstName').value, document.getElementById('lastName').value, document.getElementById('email').value, document.getElementById('honorificPrefix').value, document.getElementById('title').value, document.getElementById('nickName').value, document.getElementById('linkedinUrl').value, document.getElementById('mobilePhone').value, document.getElementById('primaryPhone').value, document.getElementById('streetAddress').value, document.getElementById('city').value, document.getElementById('state').value, document.getElementById('country').value, document.getElementById('zipCode').value, document.getElementById('preferredLanguage').value, document.getElementById('preferredImagingSoftware').value, document.getElementById('favoriteFontStyle').value, document.getElementById('activate').checked, '4')">Submit</a>
                             </div>
                         {% endif %}
-
                     </tbody>
                 </table>
               </div>

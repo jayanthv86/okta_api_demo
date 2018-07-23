@@ -70,8 +70,26 @@
                       {% endif %}
 
                       {% else %}
-                      {% if 'admin' in request.session or 'company_admin' in request.session %}
-                      <a role="button" class="btn btn-primary btn-sm navbar-btn pull-right" href="{% url 'admin' %}" aria-pressed="true">Admin</a>
+                      <a role="button" class="btn btn-primary btn-sm navbar-btn pull-right" href="{% url 'admin' %}" aria-pressed="true">Profile</a>
+
+                      {% if 'digicom_user' in request.session %}
+                      <a role="button" class="btn btn-primary btn-sm navbar-btn pull-right" href="{% url 'gate-1' %}" aria-pressed="true">Cool Fonts</a>
+                      {% endif %}
+
+                      {% if 'profile_stage' in request.session and request.session.profile_stage >= 1 %}
+                      <a role="button" class="btn btn-primary btn-sm navbar-btn pull-right" href="{% url 'gate-2' %}" aria-pressed="true">Advanced Fonts</a>
+                      {% endif %}
+
+                      {% if 'profile_stage' in request.session and request.session.profile_stage >= 2 %}
+                      <a role="button" class="btn btn-primary btn-sm navbar-btn pull-right" href="{% url 'gate-3' %}" aria-pressed="true">Professional Fonts</a>
+                      {% endif %}
+
+                      {% if 'profile_stage' in request.session and request.session.profile_stage >= 3 %}
+                      <a role="button" class="btn btn-primary btn-sm navbar-btn pull-right" href="{% url 'gate-4' %}" aria-pressed="true">Personalized Fonts</a>
+                      {% endif %}
+
+                      {% if 'profile_stage' in request.session and request.session.profile_stage >= 4 %}
+                      <a role="button" class="btn btn-primary btn-sm navbar-btn pull-right" href="{% url 'gate-5' %}" aria-pressed="true">God Fonts</a>
                       {% endif %}
 
                       <li><a href="{% url 'logout' %}">Logout</a></li>

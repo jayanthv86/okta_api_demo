@@ -17,10 +17,10 @@ from django.conf.urls import url
 from django.contrib import admin
 from .views import not_authenticated
 from .views import not_authorized
-from .views import view_home, view_tokens, view_admin, view_debug
+from .views import view_home, view_tokens, view_admin, view_debug, view_gate_1, view_gate_2, view_gate_3, view_gate_4, view_gate_5
 from .views import list_users, list_user, setNameId, login_delegate, add_users, update_user
 from .views import process_creds
-from .views import view_login, view_logout, view_profile, edit_profile
+from .views import view_login, view_logout, view_profile, edit_profile, display_profile
 from .views import oauth2_post, oauth2_callback
 from .views import registration_view, registration_view2, registration_view3, \
     registration_success, registration_success2, \
@@ -38,6 +38,11 @@ from .views import view_login_custom
 
 urlpatterns = [
     url(r'^admin/', view_admin, name='admin'),
+    url(r'^gate-1/', view_gate_1, name='gate-1'),
+    url(r'^gate-2/', view_gate_2, name='gate-2'),
+    url(r'^gate-3/', view_gate_3, name='gate-3'),
+    url(r'^gate-4/', view_gate_4, name='gate-4'),
+    url(r'^gate-5/', view_gate_5, name='gate-5'),
     url(r'^debug/', view_debug, name='debug'),
     url(r'^edit-profile/', edit_profile, name='edit-profile'),
 
@@ -53,6 +58,7 @@ urlpatterns = [
 
     # impersonation
     url(r'^list-users', list_users, name='list_users'),
+    url(r'^display-profile', display_profile, name='display_profile'),
     url(r'^list-user', list_user, name='list_user'),
     url(r'^add-users', add_users, name='add_users'),
     url(r'^update-user', update_user, name='update_user'),

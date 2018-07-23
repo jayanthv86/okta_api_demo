@@ -25,7 +25,7 @@
                         </div>
                     </div>
                 </div>
-                {% if 'profile_stage' in request.session and request.session.profile_stage <= 0 %}
+                {% if 'profile_stage' in request.session and request.session.profile_stage >= 0 %}
                 <div class="row">
                     <div class="col-md-12">
                         <h6>Because of your limited profile info, your view is limited. Please fill out more info to view more.</h6>
@@ -49,7 +49,6 @@
                             <th>Email</th>
                             <td><input type="text" id="email" class="form-control" value="" /></td>
                           </tr>
-                         {% if 'digicom_user' in request.session %}
                           <tr>
                             <th>Honorific Prefix</th>
                             <td><input type="text" id="honorificPrefix" class="form-control" value="" /></td>
@@ -62,8 +61,7 @@
                             <th>NickName</th>
                             <td><input type="text" id="nickName" class="form-control" value="" /></td>
                           </tr>
-
-                          {% if 'profile_stage' in request.session %}
+                          {% if 'profile_stage' in request.session and request.session.profile_stage >= 1%}
                           <tr>
                             <th>LinkedIn URL</th>
                             <td><input type="text" id="linkedinUrl" class="form-control" value="" /></td>
@@ -76,6 +74,7 @@
                             <th>Primary Phone</th>
                             <td><input type="text" id="primaryPhone" class="form-control" value="" /></td>
                           </tr>
+                         {% if 'profile_stage' in request.session and request.session.profile_stage >= 2 %}
                           <tr>
                             <th>Street Address</th>
                             <td><input type="text" id="streetAddress" class="form-control" value="" /></td>
@@ -96,6 +95,7 @@
                             <th>Zip Code</th>
                             <td><input type="text" id="zipCode" class="form-control" value="" /></td>
                           </tr>
+                         {% endif %}
                           <tr>
                             <th>Preferred Language</th>
                             <td><input type="text" id="preferredLanguage" class="form-control" value="" /></td>
@@ -108,15 +108,13 @@
                             <th>Favorite Font styles</th>
                             <td><input type="text" id="favoriteFontStyle" class="form-control" value="" /></td>
                           </tr>
-                        {% endif %}
                         {% else %}
                           <label class="radio">Confirm your account?</label>
                           <input type="checkbox" id="activate"  v-model="activate" />Yes
                             <div class="col-sm-12">
-                                <a class="btn btn-success" onclick="updateUser(document.getElementById('firstName').value, document.getElementById('lastName').value, document.getElementById('email').value, null, null, null, null, null, null, null, null, null, null, null, null, null, null, document.getElementById('activate').checked, '0')">Submit</a>
+                                <a class="btn btn-success" onclick="updateUser(document.getElementById('firstName').value, document.getElementById('lastName').value, document.getElementById('email').value, document.getElementById('honorificPrefix').value, document.getElementById('title').value, document.getElementById('nickName').value, null, null, null, null, null, null, null, null, null, null, null, document.getElementById('activate').checked, '1')">Submit</a>
                             </div>
                         {% endif %}
-
                     </tbody>
                 </table>
               </div>
